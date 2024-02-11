@@ -7,9 +7,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg"
         android:orientation="vertical"
-        tools:context=".NewNoteFragment"
-        android:padding="12dp">
+        android:padding="12dp"
+        tools:context=".NewNoteFragment">
 
         <TextView
             android:id="@+id/addNoteHeading"
@@ -19,35 +20,39 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins"
             android:text="Add Note."
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/addNoteTitle"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:hint="Enter the title"
-            android:padding="12dp"
-            android:textSize="20sp"
             android:layout_below="@id/addNoteHeading"
-            android:background="@drawable/border"
             android:layout_marginTop="16dp"
+            android:background="@drawable/border"
+            android:fontFamily="@font/poppins"
+            android:hint="Enter the title"
             android:maxLines="1"
-            android:fontFamily="@font/poppins"/>
+            android:padding="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/addNoteDesc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Enter the description"
-            android:gravity="top"
-            android:padding="12dp"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins"
-            android:background="@drawable/border"
             android:layout_below="@id/addNoteTitle"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="12dp"
+            android:background="@drawable/border"
+            android:fontFamily="@font/poppins"
+            android:gravity="top"
+            android:hint="Enter the description"
+            android:padding="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 </layout>
