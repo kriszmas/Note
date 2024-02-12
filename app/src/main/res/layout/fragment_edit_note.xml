@@ -19,8 +19,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins"
-            android:text="Edit Note."
-            android:textColor="@color/white"
+            android:text="Edit Note"
+            android:textColor="@color/secondary"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -35,8 +35,8 @@
             android:hint="Enter the title"
             android:maxLines="1"
             android:padding="12dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="@color/secondary"
+            android:textColorHint="@color/secondary"
             android:textSize="20sp" />
 
         <EditText
@@ -50,8 +50,8 @@
             android:gravity="top"
             android:hint="Enter the description"
             android:padding="12dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="@color/secondary"
+            android:textColorHint="@color/secondary"
             android:textSize="18sp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -62,10 +62,10 @@
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/cardview_shadow_start_color"
+            android:backgroundTint="@color/secondary"
             android:clickable="true"
             android:contentDescription="editFab"
             android:src="@drawable/done"
-            android:tintMode="@color/white" />
+            android:tintMode="@color/third" />
     </RelativeLayout>
 </layout>
