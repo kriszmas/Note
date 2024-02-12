@@ -8,7 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -21,13 +21,12 @@ import com.example.note.databinding.FragmentHomeBinding
 import com.example.note.model.Note
 import com.example.note.viewmodel.NoteViewModel
 
-
 class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextListener, MenuProvider {
 
     private var homeBinding: FragmentHomeBinding? = null
     private val binding get() = homeBinding!!
 
-    private lateinit var notesViewModel: NoteViewModel
+    private lateinit var notesViewModel : NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
 
     override fun onCreateView(
@@ -46,29 +45,28 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         notesViewModel = (activity as MainActivity).noteViewModel
-
         setupHomeRecyclerView()
 
-        binding.addNoteFab.setOnClickListener{
+        binding.addNoteFab.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_addNoteFragment)
         }
     }
 
     private fun updateUI(note: List<Note>?){
-        if(note != null){
-            if(note.isNotEmpty()) {
+        if (note != null){
+            if (note.isNotEmpty()){
                 binding.emptyNotesImage.visibility = View.GONE
-                binding.homeRecyclerView.visibility =View.VISIBLE
-            }else{
-                binding.emptyNotesImage.visibility =View.VISIBLE
-                binding.homeRecyclerView.visibility =View.GONE
+                binding.homeRecyclerView.visibility = View.VISIBLE
+            } else {
+                binding.emptyNotesImage.visibility = View.VISIBLE
+                binding.homeRecyclerView.visibility = View.GONE
             }
         }
     }
 
     private fun setupHomeRecyclerView(){
         noteAdapter = NoteAdapter()
-        binding.homeRecyclerView.apply{
+        binding.homeRecyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             setHasFixedSize(true)
             adapter = noteAdapter
@@ -85,12 +83,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     private fun searchNote(query: String?){
         val searchQuery = "%$query"
 
-        notesViewModel.searchNote(searchQuery).observe(this){list ->
+        notesViewModel.searchNote(searchQuery).observe(this) {list ->
             noteAdapter.differ.submitList(list)
         }
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
+    override fun onQueryTextSubmit(p0: String?): Boolean {
         return false
     }
 

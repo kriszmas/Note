@@ -38,6 +38,7 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
@@ -53,10 +54,10 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
             val note = Note(0, noteTitle, noteDesc)
             notesViewModel.addNote(note)
 
-            Toast.makeText(addNoteView.context,"Note Saved", Toast.LENGTH_SHORT).show()
+            Toast.makeText(addNoteView.context, "Note Saved", Toast.LENGTH_SHORT).show()
             view.findNavController().popBackStack(R.id.homeFragment, false)
-        }else{
-            Toast.makeText(addNoteView.context,"Please enter note title", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(addNoteView.context, "Please enter note title", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -70,7 +71,8 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
             R.id.saveMenu -> {
                 saveNote(addNoteView)
                 true
-            }else -> false
+            }
+            else -> false
         }
     }
 
