@@ -7,37 +7,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardElevation="6dp"
-        app:cardCornerRadius="10dp">
+        app:cardBackgroundColor="@color/cardview_shadow_end_color"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/cardview_shadow_end_color"
             android:orientation="vertical"
-            android:background="@drawable/border"
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/noteTitle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/noteTitle"
                 android:layout_weight="200"
-                android:textColor="@color/white"
                 android:fontFamily="@font/poppins"
                 android:text="Note Title"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/noteDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/noteDesc"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins"
                 android:maxHeight="170dp"
                 android:text="Description"
-                android:textSize="14sp"
-                android:fontFamily="@font/poppins"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
