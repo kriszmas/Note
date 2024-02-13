@@ -1,5 +1,7 @@
 package com.example.note.adapter
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -40,9 +42,14 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val currentNote = differ.currentList[position]
 
-        holder.itemBinding.noteTitle.text = currentNote.noteTitle
-        holder.itemBinding.noteDesc.text = currentNote.noteDesc
+        with(holder.itemBinding){
+            holder.itemBinding.noteTitle.text = currentNote.noteTitle
+            holder.itemBinding.noteDesc.text = currentNote.noteDesc
 
+
+            val wordCount = currentNote.noteDesc.trim().split("\\s+".toRegex()).count{it.isNotEmpty()}
+            wordCountTextView.text = wordCount.toString()
+        }
         holder.itemView.setOnClickListener {
             val direction = HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(currentNote)
             it.findNavController().navigate(direction)

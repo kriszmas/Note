@@ -2,6 +2,8 @@ package com.example.note.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -52,6 +54,8 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
         binding.editNoteTitle.setText(currentNote.noteTitle)
         binding.editNoteDesc.setText(currentNote.noteDesc)
 
+        updateWordCount(binding.editNoteDesc.text.toString())
+
         binding.editNoteFab.setOnClickListener {
             val noteTitle = binding.editNoteTitle.text.toString().trim()
             val noteDesc = binding.editNoteDesc.text.toString().trim()
@@ -64,6 +68,22 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
                 Toast.makeText(context, " Please enter note title", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.editNoteDesc.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                updateWordCount(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
+    private fun updateWordCount(text: String) {
+        val wordCount = text.trim().split("\\s+".toRegex()).count { it.isNotEmpty() }
+        binding.wordCountTextView.text = wordCount.toString()
     }
 
     private fun deleteNote(){
