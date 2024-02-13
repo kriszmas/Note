@@ -101,7 +101,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         popup.menuInflater.inflate(R.menu.popup_menu, popup.menu)
 
         val toggleItem = popup.menu.findItem(R.id.action_toggle_view)
-        toggleItem.title = if (isListView) "View as a Gallery" else "View as a List"
+        toggleItem.title = if (isListView) "View as a List" else "View as a Gallery"
 
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -121,9 +121,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     }
     private fun updateUIBasedOnViewType() {
         val layoutManager = if (isListView) {
-            LinearLayoutManager(context)
-        } else {
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        } else {
+            LinearLayoutManager(context)
         }
         binding.homeRecyclerView.layoutManager = layoutManager
         noteAdapter.notifyDataSetChanged()

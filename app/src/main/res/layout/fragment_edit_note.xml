@@ -34,6 +34,7 @@
             android:fontFamily="@font/poppins"
             android:hint="Enter the title"
             android:maxLines="1"
+            android:inputType="text|textNoSuggestions"
             android:padding="12dp"
             android:textColor="@color/secondary"
             android:textColorHint="@color/secondary"
