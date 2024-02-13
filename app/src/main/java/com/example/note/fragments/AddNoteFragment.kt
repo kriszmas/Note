@@ -1,6 +1,8 @@
 package com.example.note.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -35,7 +37,6 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
         addNoteBinding = FragmentAddNoteBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,6 +45,22 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
 
         notesViewModel = (activity as MainActivity).noteViewModel
         addNoteView = view
+        binding.addNoteDesc.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                updateWordCount(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
+
+    private fun updateWordCount(text: String) {
+             val wordCount = text.trim().split("\\s+".toRegex()).count { it.isNotEmpty() }
+             binding.wordCountTextView.text = wordCount.toString()
     }
 
     private fun saveNote(view: View){
