@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.note.databinding.NoteLayoutBinding
 import com.example.note.fragments.HomeFragmentDirections
 import com.example.note.model.Note
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
@@ -48,7 +52,20 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
 
             val wordCount = currentNote.noteDesc.trim().split("\\s+".toRegex()).count{it.isNotEmpty()}
-            wordCountTextView.text = wordCount.toString()
+            wordCountTextView.text = wordCount.toString()+" words"
+
+            val lastModifiedDate = Date(currentNote.lastModified)
+            val today = Calendar.getInstance().time
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+            val formattedDate = if (dateFormat.format(lastModifiedDate) == dateFormat.format(today)) {
+                "Today at ${timeFormat.format(lastModifiedDate)}"
+            } else {
+                dateFormat.format(lastModifiedDate)
+            }
+
+            noteModifiedDateTextView.text = formattedDate
         }
         holder.itemView.setOnClickListener {
             val direction = HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(currentNote)
