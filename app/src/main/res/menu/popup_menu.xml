@@ -2,4 +2,8 @@
     <item
         android:id="@+id/toolbarfirst"
         android:title="Delete All Notes" />
+    <item
+        android:id="@+id/action_toggle_view"
+        android:title="View as a List"
+        />
 </menu>

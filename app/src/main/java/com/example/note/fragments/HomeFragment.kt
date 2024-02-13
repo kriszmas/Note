@@ -15,6 +15,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.note.MainActivity
 import com.example.note.R
@@ -29,6 +30,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
     private lateinit var notesViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
+
+    private var isListView = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -97,16 +100,33 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         val popup = PopupMenu(requireContext(), anchorView)
         popup.menuInflater.inflate(R.menu.popup_menu, popup.menu)
 
+        val toggleItem = popup.menu.findItem(R.id.action_toggle_view)
+        toggleItem.title = if (isListView) "View as a Gallery" else "View as a List"
+
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.toolbarfirst -> {
                     confirmDeleteAllNotes()
                     true
                 }
+                R.id.action_toggle_view ->{
+                    isListView =!isListView
+                    updateUIBasedOnViewType()
+                    true
+                }
                 else -> false
             }
         }
         popup.show()
+    }
+    private fun updateUIBasedOnViewType() {
+        val layoutManager = if (isListView) {
+            LinearLayoutManager(context)
+        } else {
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        }
+        binding.homeRecyclerView.layoutManager = layoutManager
+        noteAdapter.notifyDataSetChanged()
     }
 
     private fun confirmDeleteAllNotes() {
@@ -119,6 +139,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
             setNegativeButton("Cancel", null)
         }.show()
     }
+
+
+
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
