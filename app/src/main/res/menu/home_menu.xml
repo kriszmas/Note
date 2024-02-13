@@ -9,4 +9,10 @@
         android:title="Search"
         app:showAsAction="ifRoom"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
+    <item
+        android:id="@+id/moreOptions"
+        android:title="More"
+        android:icon="@drawable/more"
+        app:showAsAction="always" />
+
 </menu>
