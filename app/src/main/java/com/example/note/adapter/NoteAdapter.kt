@@ -1,9 +1,14 @@
 package com.example.note.adapter
 
+import android.graphics.Color
 import android.text.Editable
+import android.text.Spannable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -18,7 +23,36 @@ import java.util.Locale
 
 class NoteAdapter() : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
-    class NoteViewHolder(val itemBinding: NoteLayoutBinding): RecyclerView.ViewHolder(itemBinding.root)
+    private var searchQuery: String = ""
+
+    fun setSearchQuery(query: String) {
+        searchQuery = query
+        notifyDataSetChanged() // Frissíti az adaptert a keresési lekérdezés változása után
+    }
+
+    class NoteViewHolder(val itemBinding: NoteLayoutBinding): RecyclerView.ViewHolder(itemBinding.root){
+        fun highlightText(query: String) {
+            if (query.isNotEmpty()){
+            val titleText = itemBinding.noteTitle.text.toString()
+            val descText = itemBinding.noteDesc.text.toString()
+
+            highlightTextInTextView(query, itemBinding.noteTitle, titleText)
+            highlightTextInTextView(query, itemBinding.noteDesc, descText)
+                }
+        }
+
+        private fun highlightTextInTextView(query: String, textView: TextView, originalText: String) {
+            val spannableString = SpannableString(originalText)
+            val startIndex = originalText.indexOf(query, ignoreCase = true)
+
+            if (startIndex != -1) {
+                val endIndex = startIndex + query.length
+                val foregroundColorSpan = ForegroundColorSpan(Color.rgb(33,73,96))
+                spannableString.setSpan(foregroundColorSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                textView.text = spannableString
+            }
+        }
+    }
 
     private val differCallback = object : DiffUtil.ItemCallback<Note>(){
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
@@ -50,6 +84,10 @@ class NoteAdapter() : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
             holder.itemBinding.noteTitle.text = currentNote.noteTitle
             holder.itemBinding.noteDesc.text = currentNote.noteDesc
 
+            if (searchQuery.isNotEmpty()) {
+                holder.highlightText(searchQuery)
+            }
+
 
             val wordCount = currentNote.noteDesc.trim().split("\\s+".toRegex()).count{it.isNotEmpty()}
             wordCountTextView.text = wordCount.toString()+" words"
@@ -67,6 +105,11 @@ class NoteAdapter() : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
             noteModifiedDateTextView.text = formattedDate
         }
+        holder.itemView.setOnClickListener {
+            val direction = HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(currentNote)
+            it.findNavController().navigate(direction)
+        }
+
         holder.itemView.setOnClickListener {
             val direction = HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(currentNote)
             it.findNavController().navigate(direction)

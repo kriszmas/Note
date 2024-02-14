@@ -1,6 +1,9 @@
 package com.example.note.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -8,9 +11,13 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -30,6 +37,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
     private lateinit var notesViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
+    private lateinit var searchView: SearchView
 
     private var isListView = true
 
@@ -80,9 +88,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.home_menu, menu)
-        val menuSearch = menu.findItem(R.id.searchMenu).actionView as SearchView
-        menuSearch.setOnQueryTextListener(this)
+        val searchItem = menu.findItem(R.id.searchMenu)
+        searchView = searchItem.actionView as SearchView
+        searchView.setOnQueryTextListener(this)
     }
+
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
@@ -128,6 +138,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         }
         binding.homeRecyclerView.layoutManager = layoutManager
         noteAdapter.notifyDataSetChanged()
+
+        if (searchView.query.isNotEmpty()) {
+            noteAdapter.setSearchQuery(searchView.query.toString())
+        }
+        noteAdapter.notifyDataSetChanged()
     }
 
     private fun confirmDeleteAllNotes() {
@@ -143,22 +158,43 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
 
 
-
     override fun onQueryTextSubmit(query: String?): Boolean {
+        if(query != null){
+            searchNote(query)
+        }
+        searchView.clearFocus()
         return false
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        searchNote(newText)
+        if(newText.isNullOrEmpty()){
+            notesViewModel.getAllNotes().observe(viewLifecycleOwner){notes->
+                noteAdapter.differ.submitList(notes)
+            }
+            searchView.clearFocus()
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.homeRecyclerView.layoutManager?.scrollToPosition(0)
+            },100)
+
+
+        }else{
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.homeRecyclerView.layoutManager?.scrollToPosition(0)
+            },100)
+            noteAdapter.setSearchQuery(newText)
+            searchNote(newText)
+        }
         return true
     }
 
     private fun searchNote(query: String?) {
         val searchQuery = "%$query%"
-        notesViewModel.searchNote(searchQuery).observe(this) { list ->
+        notesViewModel.searchNote(searchQuery).observe(viewLifecycleOwner) { list ->
             noteAdapter.differ.submitList(list)
         }
+
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
