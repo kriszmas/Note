@@ -24,6 +24,7 @@ import java.util.Locale
 class NoteAdapter() : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     private var searchQuery: String = ""
+    
 
     fun setSearchQuery(query: String) {
         searchQuery = query

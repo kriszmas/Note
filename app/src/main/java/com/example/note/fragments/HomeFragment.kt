@@ -172,10 +172,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
                 noteAdapter.differ.submitList(notes)
                 noteAdapter.setSearchQuery("")
             }
-            searchView.clearFocus()
+
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.homeRecyclerView.layoutManager?.scrollToPosition(0)
             },100)
+            searchView.clearFocus()
 
 
         }else{
