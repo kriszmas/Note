@@ -170,6 +170,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         if(newText.isNullOrEmpty()){
             notesViewModel.getAllNotes().observe(viewLifecycleOwner){notes->
                 noteAdapter.differ.submitList(notes)
+                noteAdapter.setSearchQuery("")
             }
             searchView.clearFocus()
             Handler(Looper.getMainLooper()).postDelayed({

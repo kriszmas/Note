@@ -32,13 +32,16 @@ class NoteAdapter() : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     class NoteViewHolder(val itemBinding: NoteLayoutBinding): RecyclerView.ViewHolder(itemBinding.root){
         fun highlightText(query: String) {
-            if (query.isNotEmpty()){
             val titleText = itemBinding.noteTitle.text.toString()
             val descText = itemBinding.noteDesc.text.toString()
-
-            highlightTextInTextView(query, itemBinding.noteTitle, titleText)
-            highlightTextInTextView(query, itemBinding.noteDesc, descText)
-                }
+            if (query.isNotEmpty()) {
+                    highlightTextInTextView(query, itemBinding.noteTitle, titleText)
+                    highlightTextInTextView(query, itemBinding.noteDesc, descText)
+            } else {
+                    // Ha a query üres, visszaállítja a szövegeket az eredeti állapotukra
+                    itemBinding.noteTitle.text = titleText
+                    itemBinding.noteDesc.text = descText
+            }
         }
 
         private fun highlightTextInTextView(query: String, textView: TextView, originalText: String) {
